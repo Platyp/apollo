@@ -3,6 +3,7 @@
 var irc  = require('./node_modules/irc/lib/irc.js');
 var util = require('util');
 
+// init apollo object
 var apollo = {};
 apollo.nick = 'Apollo';
 apollo.pass = 'BlackfyreFries';
@@ -18,8 +19,11 @@ apollo.client = new irc.Client(
     }
 );
 
-
+// debug
 apollo.client.addListener('raw', function(message) { console.log('raw: ', message) });
+
+// listener for snipe request, probably should reorganize this
+// sends a names request to ensure that the user to kick is in the channel
 apollo.client.addListener('message', function(from, to, message){
     if((from in apollo.drivers) && to in apollo.channels){
         var tokens = message.split(' ');
@@ -32,6 +36,7 @@ apollo.client.addListener('message', function(from, to, message){
     }
 });
 
+// listener for names request, kicks user if the user is in the channel
 apollo.client.addListener('names', function(chan, nicks){
     if(chan in apollo.channels && apollo.target in nicks && nicks[apollo.nick] === '@'){
         apollo.client.send('KICK', chan, apollo.target, 'One shot, one kill.');
@@ -39,6 +44,7 @@ apollo.client.addListener('names', function(chan, nicks){
     }
 });
 
+// ident listener
 apollo.client.addListener('notice', function(nick, to, text, message){
     if(nick === 'NickServ' && to === apollo.nick && message.args.length >= 2 &&
             message.args[1] === 'This nickname is registered. Please choose a different nickname, or identify via \u0002/msg NickServ identify <password>\u0002.'){
