@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
+// requires
 var irc  = require('./node_modules/irc/lib/irc.js');
 var util = require('util');
+var parser = require('./prismata_unit_parser/parser.js');
+var units = require('./prismata_unit_parser/unit-data.js');
 
 // init apollo object
 var apollo = {};
 apollo.nick = 'Apollo';
 apollo.pass = 'BlackfyreFries';
-apollo.channels = {'#prismata-test': true}
+apollo.channels = {'#prismata': true}
 apollo.drivers = {"Platyp": true, "BlaqkAngel": true};
 apollo.target = null;
 apollo.client = new irc.Client(
@@ -22,12 +25,24 @@ apollo.client = new irc.Client(
 // debug
 apollo.client.addListener('raw', function(message) { console.log('raw: ', message) });
 
-// listener for snipe request, probably should reorganize this
+// listener for various commands, probably should reorganize this
 // sends a names request to ensure that the user to kick is in the channel
 apollo.client.addListener('message', function(from, to, message){
-    if((from in apollo.drivers) && to in apollo.channels){
+    if(to in apollo.channels){
         var tokens = message.split(' ');
-        apollo.client.say('Goodbye.');
+        if(tokens.length >= 1){
+            if(tokens[0] === '!data'){
+                var unit = tokens.slice(1).join('').toLowerCase();
+                if(unit in units.unitList){
+                    apollo.client.say(to, parser.parse(units.unitList[unit]));
+                }
+            }
+        }
+    }
+
+    else if((from in apollo.drivers) && to in apollo.channels){
+        var tokens = message.split(' ');
+        apollo.client.say(to, 'Goodbye.');
         if(tokens.length == 3 && tokens[0].toLowerCase() == 'apollo:' 
                 && tokens[1].toLowerCase() == 'snipe'){
             apollo.target = tokens[2];
