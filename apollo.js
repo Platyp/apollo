@@ -40,11 +40,11 @@ apollo.client.addListener('message', function(from, to, message){
         }
     }
 
-    else if((from in apollo.drivers) && to in apollo.channels){
+    if((from in apollo.drivers) && to in apollo.channels){
         var tokens = message.split(' ');
-        apollo.client.say(to, 'Goodbye.');
         if(tokens.length == 3 && tokens[0].toLowerCase() == 'apollo:' 
                 && tokens[1].toLowerCase() == 'snipe'){
+            apollo.client.say(to, 'Goodbye.');
             apollo.target = tokens[2];
             apollo.client.send('NAMES', to);
         }
