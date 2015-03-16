@@ -1,10 +1,10 @@
 {
     "name": "Apollo",
-    "version": "0.1",
+    "version": "0.0.1",
     "description": "A bot for #prismata.",
     "dependencies": {
         "irc": "latest",
-        "node-mysql": "latest"
+        "mysql": "latest"
     },
     "author": "Platyp",
     "private": true
