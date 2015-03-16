@@ -1,22 +1,18 @@
 #!/usr/bin/env node
 
 // requires
-var mysql  = require('mysql');
-var apollo = require('./lib/apollo.js');
+var util    = require('util');
+var mysql   = require('mysql');
+var secrets = require('./secrets.json');
+var apollo  = require('./lib/apollo.js');
 
-var filename = 'index.js';
-
-if(process.argv.length != 5){
-    console.log('Usage: node ' + filename + ' dbUsername dbPass botPass');
-    process.exit();
-}
-
+console.log(secrets);
 //init db
 var connection = mysql.createConnection({
-    host: 'localhost',
-    user: process.argv[2],
-    password: process.argv[3],
-    database: 'apollo'
+    host: secrets.dbHost,
+    user: secrets.dbUsername,
+    password: secrets.dbPass,
+    database: secrets.database
 });
 
 connection.connect();
