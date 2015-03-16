@@ -6,4 +6,4 @@ start \
 -al forever.lob \
 -ao out.log \
 -ae err.log \
-index.js
+../index.js
