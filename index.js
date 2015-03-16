@@ -6,8 +6,8 @@ var apollo = require('./lib/apollo.js');
 
 var filename = 'index.js';
 
-if(process.argv.length != 4){
-    console.log('Usage: node ' + filename + ' dbUsername dbPass');
+if(process.argv.length != 5){
+    console.log('Usage: node ' + filename + ' dbUsername dbPass botPass');
     process.exit();
 }
 

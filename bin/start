@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Invoke the Forever module
+forever \
+start \
+-al forever.lob \
+-ao out.log \
+-ae err.log \
+index.js
