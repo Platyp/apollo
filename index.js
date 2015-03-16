@@ -4,7 +4,7 @@
 var mysql  = require('mysql');
 var apollo = require('./lib/apollo.js');
 
-var filename = 'apollo.js';
+var filename = 'index.js';
 
 if(process.argv.length != 4){
     console.log('Usage: node ' + filename + ' dbUsername dbPass');
